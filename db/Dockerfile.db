@@ -1,0 +1,7 @@
+FROM postgres:16-alpine
+
+# RUN mkdir -p /usr/src/app
+
+RUN apk update && apk add python3
+
+# COPY ./postgres/postgres-scripts/* /docker-entrypoint-initdb.d/

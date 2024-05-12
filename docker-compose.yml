@@ -1,0 +1,51 @@
+
+services:
+  api:
+    build:
+      dockerfile: ./Dockerfile.api
+      context: ./
+      args:
+        - DEV=true
+
+    restart: always
+
+    container_name: api
+    ports:
+      - 8000:8000
+
+    volumes:
+      - ./:/user/src/app
+
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+
+  db:
+    build:
+      dockerfile: ./Dockerfile.db
+      context: ./db
+
+    restart: always
+
+    container_name: postgres_db
+
+    volumes:
+      - ./:/usr/src/app:ro
+      - pg_data:/var/lib/postgresql/data
+
+    environment:
+      - POSTGRES_USER=codemonk_user
+      - POSTGRES_PASSWORD=codemonk_password
+      - POSTGRES_DB=codemonk_db_dev
+
+    # healthcheck:
+    #   test: pg_isready -d epassdb -U epassuser
+    #   interval: 1m30s
+    #   timeout: 30s
+    #   retries: 5
+    #   start_period: 30s
+
+volumes:
+  pg_data:
+    

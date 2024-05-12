@@ -1,0 +1,10 @@
+.git
+.gitignore
+venv
+.docker
+.dockerignore
+Dockerfile
+Dockerfile.prod
+db.sqlite3
+migrations
+__pycache__
