@@ -4,6 +4,22 @@ name: Checks
 
 on: [push]
 
+services:
+ services:
+  db:
+    build:
+      dockerfile: ./Dockerfile.db
+      context: ./db
+    restart: always
+    container_name: postgres_db
+    volumes:
+      - ./:/usr/src/app:ro
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=codemonk_user
+      - POSTGRES_PASSWORD=codemonk_password
+      - POSTGRES_DB=codemonk_db_dev
+
 jobs:
   test-lint:
     name: Test and Lint
@@ -20,3 +36,6 @@ jobs:
         run: docker-compose run --rm api sh -c "pytest"
       - name: Lint
         run: docker-compose run --rm api sh -c "flake8"
+
+volumes:
+  pg_data:
